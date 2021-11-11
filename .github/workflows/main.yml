@@ -110,6 +110,8 @@ jobs:
     if: github.event_name == 'release'
     steps: 
       - uses: actions/checkout@v2
+        with:
+          python-version: 3.9
       - name: Store version
         id: vars
         run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}

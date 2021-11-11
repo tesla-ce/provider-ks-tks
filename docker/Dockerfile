@@ -1,11 +1,11 @@
 #FROM python:3.7-alpine
-FROM python:3-alpine3.13
+FROM python:3.9-alpine
 
 # Version to use
 ARG TESLA_CE_PROVIDER_VERSION
 
 # Define the TeSLA CE package to install
-ARG TESLA_CE_PROVIDER_PACKAGE="tesla-ce-provider-ls-tks==$TESLA_CE_PROVIDER_VERSION"
+ARG TESLA_CE_PROVIDER_PACKAGE="tesla-ce-provider-ks-tks==$TESLA_CE_PROVIDER_VERSION"
 
 # Install build deps, then run `pip install`, then remove unneeded build deps all in a single step. Correct the path to your production requirements file, if needed.
 RUN set -ex \
@@ -53,7 +53,7 @@ RUN set -ex \
             expat
 
 # Prepare environment
-ENV PROVIDER_CLASS=tfr.TFRProvider
+ENV PROVIDER_CLASS=tks.TKSProvider
 ENV PROVIDER_VERSION=$TESLA_CE_PROVIDER_VERSION
 
 # Create a user and group for Celery
