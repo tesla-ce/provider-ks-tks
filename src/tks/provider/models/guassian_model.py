@@ -73,6 +73,8 @@ class GaussianModel(SimpleModel):
 
         samples_discarded = 0
         number_features = 0
+        decision_threshold = config['start_decision_threshold']
+
         for feature_array in features:
             for feature in feature_array['features']:
                 number_features += 1

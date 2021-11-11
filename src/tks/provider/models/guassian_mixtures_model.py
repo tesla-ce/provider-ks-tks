@@ -122,6 +122,7 @@ class GaussianMixturesModel(SimpleModel):
         samples_discarded = 0
         number_features = 0
         codes = {}
+        decision_threshold = config['start_decision_threshold']
 
         for feature_array in features:
             for feature in feature_array['features']:
@@ -130,7 +131,7 @@ class GaussianMixturesModel(SimpleModel):
                 codes[f"{feature['type']}_{feature['code']}"].append(feature['time'])
                 number_features += 1
 
-        for code in codes.items():
+        for code in codes:
 
             if code not in self._data:
                 samples_discarded += 1
