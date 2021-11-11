@@ -3,3 +3,6 @@ venv
 celerydb.sqlite
 .pytest_cache
 *.pyc
+dist/
+build/
+src/tesla_ce_provider_ks_tks.egg-info/

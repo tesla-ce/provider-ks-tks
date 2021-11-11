@@ -1,6 +1,6 @@
 tesla-ce-provider>0.0.3
 numpy
-sklearn
 joblib
 scikit-learn
 scipy
+scikit-learn
