@@ -1,0 +1,5 @@
+.idea
+venv
+celerydb.sqlite
+.pytest_cache
+*.pyc

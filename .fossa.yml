@@ -1,0 +1,8 @@
+analyze:
+  modules:
+    - name: tesla-ce/provider-ks-tks
+      type: pip
+      target: github.com/tesla-ce/provider-ks-tks
+      path:  src
+      options:
+        requirements: requirements.txt

@@ -1,0 +1,29 @@
+{
+  "instrument": 2,
+  "acronym": "tks",
+  "version": "0.0.1",
+  "url": "https://github.com/tesla-ce/provider-ks-tks",
+  "image": "teslace/provider-ks-tks:latest",
+  "name": "TeSLA CE Keystroke",
+  "description": "Keystroke instrument provider",
+  "credentials": [],
+  "has_service": false,
+  "service_port": null,
+  "options_schema": {
+    "type" : "object",
+    "additionalProperties": false,
+    "properties": {
+      "upsample_times": {"type": "number", "default": 1},
+      "model" : {"type": "string", "default": "cnn", "enum": ["cnn", "hog"]},
+      "fast_validation": {"type": "boolean", "default": true},
+      "min_enrol_samples": {"type": "number", "default": 10},
+      "target_enrol_samples": {"type": "number", "default": 15},
+      "encoding_num_jitters": {"type": "number", "default": 5}
+    }
+  },
+  "queue": "ks_tks",
+  "allow_validation": true,
+  "alert_below": 0.3,
+  "warning_below": 0.6,
+  "inverted_polarity": false
+}
