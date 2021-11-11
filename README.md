@@ -1,7 +1,7 @@
 [![PyPi Version](https://img.shields.io/pypi/v/tesla-ce-provider-ks-tks.svg)](https://pypi.python.org/pypi/tesla-ce-provider-ks-tks/)
 [![codecov](https://codecov.io/gh/tesla-ce/provider-ks-tks/branch/main/graph/badge.svg?token=PJJQMW981P)](https://codecov.io/gh/tesla-ce/provider-ks-tks)
 [![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
-[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B26246%2Fgithub.com%2Ftesla-ce%2Fprovider-ks-tks.svg?type=shield)](https://app.fossa.com/projects/custom%2B26246%2Fgithub.com%2Ftesla-ce%2Fprovider-ls-tks?ref=badge_shield)
+[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B26246%2Fgithub.com%2Ftesla-ce%2Fprovider-ks-tks.svg?type=shield)](https://app.fossa.com/projects/custom%2B26246%2Fgithub.com%2Ftesla-ce%2Fprovider-ks-tks?ref=badge_shield)
 [![Quality gate](https://sonar.sunai.uoc.edu/api/project_badges/quality_gate?project=tesla-ce_provider-ks-tks)](https://sonar.sunai.uoc.edu/dashboard?id=tesla-ce_provider-ks-tks)
 # TKS: TeSLA CE Keystroke Dynamics Recognition provider 
 
