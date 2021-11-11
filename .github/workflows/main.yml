@@ -102,7 +102,7 @@ jobs:
         if: matrix.python-version == 3.9
         continue-on-error: true
         run: |
-          curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | bash
+          curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash
           FOSSA_API_KEY=${{ secrets.FOSSA_API_KEY}} fossa analyze
   publish:    
     needs: build
