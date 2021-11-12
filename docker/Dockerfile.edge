@@ -27,6 +27,12 @@ RUN set -ex \
             git \
             python3-dev \
             expat-dev \
+            libxml2 \
+            python3-dev \
+            libxml2-dev \
+            libxslt-dev \
+            lapack-dev \
+            gfortran \
     && python3 -m venv /venv \
     && /venv/bin/pip install -U pip \
     # Install the package
