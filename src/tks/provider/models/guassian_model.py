@@ -46,20 +46,20 @@ class GaussianModel(SimpleModel):
         for feature_array in features:
             for feature in feature_array['features']:
                 aux = {"n": 0, "xsq": 0, "x": 0}
-                if feature['type'] not in self._data:
-                    self._data[feature['type']] = {
+                if str(feature['type']) not in self._data:
+                    self._data[str(feature['type'])] = {
                         'id': None,
                         'model': {}
                     }
 
-                if feature['code'] in self._data[feature['type']]['model']:
-                    aux = self._data[feature['type']]['model'][feature['code']]
+                if feature['code'] in self._data[str(feature['type'])]['model']:
+                    aux = self._data[str(feature['type'])]['model'][feature['code']]
 
                 aux['n'] += 1
                 aux['x'] += feature['time']
                 aux['xsq'] += feature['time']**2
 
-                self._data[feature['type']]['model'][feature['code']] = aux
+                self._data[str(feature['type'])]['model'][feature['code']] = aux
 
         return {}
 
@@ -78,15 +78,15 @@ class GaussianModel(SimpleModel):
         for feature_array in features:
             for feature in feature_array['features']:
                 number_features += 1
-                if feature['type'] not in self._data:
+                if str(feature['type']) not in self._data:
                     samples_discarded += 1
                     continue
 
-                if feature['code'] not in self._data[feature['type']]['model']:
+                if feature['code'] not in self._data[str(feature['type'])]['model']:
                     samples_discarded += 1
                     continue
 
-                key_model = self._data[feature['type']]['model'][feature['code']]
+                key_model = self._data[str(feature['type'])]['model'][feature['code']]
 
                 muu = key_model['x']/key_model['n']
                 roo = 0
@@ -132,7 +132,7 @@ class GaussianModel(SimpleModel):
                 elif decision_threshold < 0:
                     decision_threshold = 0
 
-        if samples_discarded > number_features*0.5:
-            return None
+        #if samples_discarded > number_features*0.5:
+        #    return None
 
-        return decision_threshold
+        return [decision_threshold, samples_discarded, number_features]

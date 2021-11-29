@@ -26,6 +26,7 @@ def test_progressive_enrolment(tks_provider):
     :return:
     '''
 
+    tks_provider.set_options({'model': 'GaussianModel'})
     data = get_sample(filename='valid_user1')
     model = None
     for i in range(0, 15):
@@ -49,6 +50,7 @@ def test_verification(tks_provider):
     :param tks_provider:
     :return:
     '''
+    tks_provider.set_options({'model': 'GaussianModel'})
     test_progressive_enrolment(tks_provider)
 
     request = get_request(filename='valid_user1')
@@ -66,6 +68,8 @@ def test_verification_enrol_user1_verification_user2(tks_provider):
     :param tks_provider:
     :return:
     '''
+    tks_provider.set_options({"failed_missing_data": True})
+    tks_provider.set_options({'model': 'GaussianModel'})
     test_progressive_enrolment(tks_provider)
 
     request = get_request(filename='valid_user2')

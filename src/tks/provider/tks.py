@@ -17,6 +17,7 @@
 """ TeSLA CE Face Recognition module """
 import simplejson
 from tesla_ce_provider import BaseProvider, result
+from tesla_ce_provider.provider.audit import KeystrokeAudit
 from . import utils
 from .models import GaussianModel, GaussianMixturesModel
 
@@ -32,7 +33,7 @@ class TKSProvider(BaseProvider):
 
         self.accepted_mimetypes = ['text/plain']
         self.config = {
-            'model': 'GaussianModel',
+            'model': 'GaussianMixturesModel',
             'min_enrol_samples': 10,
             'target_enrol_samples': 15,
             'start_decision_threshold': 0.5,
@@ -42,6 +43,8 @@ class TKSProvider(BaseProvider):
             'result_invalid_delta_di': 0.04,
             'result_invalid_delta_tri': 0.03,
             'result_invalid_delta_four': 0.02,
+            'failed_missing_data': False,
+            'missing_data_threshold': 0.5
         }
 
     def _get_model_class(self, model):
@@ -139,15 +142,18 @@ class TKSProvider(BaseProvider):
 
         ks_data = sample_check['ks_data']
 
-        score = tks_model.verify(ks_data, self.config)
+        [score, samples_discarded, number_features] = tks_model.verify(ks_data, self.config)
 
         code = result.VerificationResult.AlertCode.OK
-        if score is None:
-            score = 0
+
+        if samples_discarded > number_features*self.config['missing_data_threshold']:
             code = result.VerificationResult.AlertCode.ALERT
 
-        # TODO: calculate audit
-        return result.VerificationResult(True, result=score, code=code)
+            if self.config['failed_missing_data'] is True:
+                score = 0
+
+        audit = KeystrokeAudit(num_samples_discarded=samples_discarded, num_features=number_features)
+        return result.VerificationResult(True, result=score, code=code, audit=audit)
 
     def on_notification(self, key, info):
         """

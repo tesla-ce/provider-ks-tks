@@ -69,6 +69,7 @@ def test_verification_mixtures_enrol_user1_verification_user2(tks_provider):
     :param tks_provider:
     :return:
     '''
+    tks_provider.set_options({"failed_missing_data": True})
     test_progressive_enrolment_mixtures(tks_provider)
     tks_provider.set_options({'model': 'GaussianMixturesModel'})
 

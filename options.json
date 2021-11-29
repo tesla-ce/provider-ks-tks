@@ -15,7 +15,9 @@
     "properties": {
       "model" : {"type": "string", "default": "GaussianModel", "enum": ["GaussianModel", "GaussianMixturesModel"]},
       "min_enrol_samples": {"type": "number", "default": 10},
-      "target_enrol_samples": {"type": "number", "default": 15}
+      "target_enrol_samples": {"type": "number", "default": 15},
+      "failed_missing_data": {"type": "boolean", "default": false},
+      "missing_data_threshold": {"type": "number", "default": 0.5}
     }
   },
   "queue": "ks_tks",

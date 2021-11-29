@@ -30,10 +30,11 @@ class GaussianMixturesModel(SimpleModel):
         super().__init__(model_object=model_object)
         if model_object is not None:
             with BytesIO() as tmp_bytes:
-                tmp_b64 = self._data.encode('utf-8')
-                data_model = base64.b64decode(tmp_b64)
-                tmp_bytes.write(data_model)
-                self._data = load(tmp_bytes)
+                if self._data is not None:
+                    tmp_b64 = self._data.encode('utf-8')
+                    data_model = base64.b64decode(tmp_b64)
+                    tmp_bytes.write(data_model)
+                    self._data = load(tmp_bytes)
 
 
     def to_json(self):
@@ -62,11 +63,11 @@ class GaussianMixturesModel(SimpleModel):
         return False
 
     def enrol(self, features):
-        '''
+        """
         Enrol features in this model
         :param features:
         :return:
-        '''
+        """
         if self._data is None:
             self._data = {}
 
@@ -113,12 +114,12 @@ class GaussianMixturesModel(SimpleModel):
         return new_codes
 
     def verify(self, features, config):
-        '''
+        """
         Verify if features are from this model
         :param features:
         :param config:
         :return:
-        '''
+        """
         samples_discarded = 0
         number_features = 0
         codes = {}
@@ -139,6 +140,11 @@ class GaussianMixturesModel(SimpleModel):
 
             clf = self._data[code]
             y_test = codes[code]
+
+            y_test = np.array(y_test, dtype=float)
+            y_test[np.isnan(y_test)] = 0
+            y_test = np.array(y_test, dtype=int)
+
             y_test = np.array(y_test)/500
             y_test = y_test.reshape(-1, 1)
 
@@ -156,11 +162,11 @@ class GaussianMixturesModel(SimpleModel):
                     }
                 else:
                     result_dict = {
-                        DWELL: config['result_invalid_delta_di'],
-                        FLIGHT: config['result_invalid_delta_di'],
-                        DIGRAPH: config['result_invalid_delta_di'],
-                        TRIGRAPH: config['result_invalid_delta_tri'],
-                        FOURGRAPH: config['result_invalid_delta_four'],
+                        DWELL: -config['result_invalid_delta_di'],
+                        FLIGHT: -config['result_invalid_delta_di'],
+                        DIGRAPH: -config['result_invalid_delta_di'],
+                        TRIGRAPH: -config['result_invalid_delta_tri'],
+                        FOURGRAPH: -config['result_invalid_delta_four'],
                     }
 
                 delta = result_dict[int(code.split('_')[0], 10)]
@@ -171,7 +177,4 @@ class GaussianMixturesModel(SimpleModel):
                 elif decision_threshold > 1:
                     decision_threshold = 1.
 
-        if samples_discarded > number_features*0.5:
-            return None
-
-        return decision_threshold
+        return [decision_threshold, samples_discarded, number_features]
