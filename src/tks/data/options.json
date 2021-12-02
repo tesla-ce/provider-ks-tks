@@ -1,7 +1,7 @@
 {
   "instrument": 2,
   "acronym": "tks",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "url": "https://github.com/tesla-ce/provider-ks-tks",
   "image": "teslace/provider-ks-tks:latest",
   "name": "TeSLA CE Keystroke",

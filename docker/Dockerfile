@@ -1,5 +1,5 @@
 #FROM python:3.7-alpine
-FROM python:3.9-alpine
+FROM python:3.9.9-bullseye
 
 # Version to use
 ARG TESLA_CE_PROVIDER_VERSION
@@ -8,63 +8,21 @@ ARG TESLA_CE_PROVIDER_VERSION
 ARG TESLA_CE_PROVIDER_PACKAGE="tesla-ce-provider-ks-tks==$TESLA_CE_PROVIDER_VERSION"
 
 # Install build deps, then run `pip install`, then remove unneeded build deps all in a single step. Correct the path to your production requirements file, if needed.
-RUN set -ex \
-    && apk add --no-cache --virtual .build-deps \
-            g++ \
-            gcc \
-            make \
-            cmake \
-            libc-dev \
-            musl-dev \
-            linux-headers \
-            pcre-dev \
-            libffi-dev \
-	        jpeg-dev \
-	        freetype-dev \
-            git \
-            python3-dev \
-            expat-dev \
-            libxml2 \
-            python3-dev \
-            libxml2-dev \
-            libxslt-dev \
-            lapack-dev \
-            gfortran \
-    && python3 -m venv /venv \
-    && /venv/bin/pip install -U pip \
-    # Install the package
-    && LIBRARY_PATH=/lib:/usr/lib /bin/sh -c "/venv/bin/pip install --no-cache-dir $TESLA_CE_PROVIDER_PACKAGE" \
-    && runDeps="$( \
-            scanelf --needed --nobanner --recursive /venv \
-                    | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-                    | sort -u \
-                    | xargs -r apk info --installed \
-                    | sort -u \
-    )" \
-    && apk add --virtual .python-rundeps $runDeps \
-    && apk del .build-deps
+RUN apt-get update && apt-get install nano -y
 
-# Install production dependencies
-RUN set -ex \
-    && apk add --no-cache \
-            bash \
-            nano \
-            gcc \
-            libressl-dev \
-            libffi \
-            freetype \
-            jpeg \
-            libxml2 \
-            libxslt \
-            expat
+RUN python3 -m venv /venv \
+    && /venv/bin/pip install -U pip \
+    && /venv/bin/pip install --no-cache-dir $TESLA_CE_PROVIDER_PACKAGE
 
 # Prepare environment
 ENV PROVIDER_CLASS=tks.TKSProvider
 ENV PROVIDER_VERSION=$TESLA_CE_PROVIDER_VERSION
 
 # Create a user and group for Celery
-RUN addgroup -g 2000 -S celery && \
-    adduser -u 1000 -S celery -G celery
+RUN addgroup celery && \
+    useradd -g celery celery && \
+    usermod -a -G celery celery
+
 
 ADD docker/check_health.sh /venv/bin/check_health.sh
 RUN chmod +x /venv/bin/check_health.sh
