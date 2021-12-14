@@ -99,6 +99,9 @@ class GaussianMixturesModel(SimpleModel):
         for code, x_train in codes.items():
             if len(x_train) < n_components:
                 continue
+            x_test = np.array(x_test, dtype=float)
+            x_test[np.isnan(x_test)] = 0
+            x_test = np.array(x_test, dtype=int)
 
             x_train = np.array(x_train)/500
             x_train = x_train.reshape(-1, 1)
