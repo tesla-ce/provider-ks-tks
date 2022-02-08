@@ -100,7 +100,7 @@ class GaussianMixturesModel(SimpleModel):
             if len(x_train) < n_components:
                 continue
             x_train = np.array(x_train, dtype=float)
-            x_train[np.isnan(x_test)] = 0
+            x_train[np.isnan(x_train)] = 0
             x_train = np.array(x_train, dtype=int)
 
             x_train = np.array(x_train)/500
