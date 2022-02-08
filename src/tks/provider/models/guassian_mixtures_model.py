@@ -99,18 +99,21 @@ class GaussianMixturesModel(SimpleModel):
         for code, x_train in codes.items():
             if len(x_train) < n_components:
                 continue
-            x_train = np.array(x_train, dtype=float)
-            x_train[np.isnan(x_train)] = 0
-            x_train = np.array(x_train, dtype=int)
+            try:
+                x_train = np.array(x_train, dtype=float)
+                x_train[np.isnan(x_train)] = 0
+                x_train = np.array(x_train, dtype=int)
 
-            x_train = np.array(x_train)/500
-            x_train = x_train.reshape(-1, 1)
+                x_train = np.array(x_train)/500
+                x_train = x_train.reshape(-1, 1)
 
-            clf = mixture.GaussianMixture(n_components=n_components,
-                                          covariance_type='full')
-            clf.fit(x_train)
+                clf = mixture.GaussianMixture(n_components=n_components,
+                                              covariance_type='full')
+                clf.fit(x_train)
 
-            user_model[code] = clf
+                user_model[code] = clf
+            except TypeError:
+                pass
 
         self._data = user_model
 
