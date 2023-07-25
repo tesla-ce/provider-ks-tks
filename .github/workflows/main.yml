@@ -37,7 +37,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: [3.8, 3.9]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -103,7 +103,8 @@ jobs:
         if: matrix.python-version == 3.9
         continue-on-error: true
         run: |
-          curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash
+          curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install-latest.sh | bash
+          # fossa init
           FOSSA_API_KEY=${{ secrets.FOSSA_API_KEY}} fossa analyze
   publish:    
     needs: build
